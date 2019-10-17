@@ -68,8 +68,8 @@
       return `
         <li>
           <input type="checkbox" data-index=${i} id="item${i}" ${todo.done ? 'checked' : ''} />
-          <label for="item${i}">Task ${i+1}: ${todo.text}</label>
-          <button data-index=${i} class="delete-one">🧹</button>
+          <label for="item${i}">${i+1}: ${todo.text}</label>
+          <button data-index=${i} class="delete-one">❌</button>
         </li>
       `;
     }).join('');
@@ -98,9 +98,9 @@
 
   function deleteOneItem(e) {
     const el = e.target;
-    if (!el.matches('button')) return;
+    if (!el.matches('.delete-one')) return;
     const index = el.dataset.index;
-    items.splice(index);
+    items.splice(index, 1);
     populateList(items, itemsList);
     updateLocalStorage();
   }

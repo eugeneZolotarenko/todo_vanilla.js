@@ -79,6 +79,11 @@ h2 {
   display: none;
 }
 
+.todos label {
+  display: flex;
+  align-items: center;
+}
+
 .todos input + label:before {
   content: '⬜️';
   margin-right: 10px;

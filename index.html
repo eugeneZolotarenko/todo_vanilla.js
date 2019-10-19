@@ -30,11 +30,18 @@
         <button class="check-all">Check All</button>
         <button class="uncheck-all">Uncheck All</button>
     </div>
+    <form class="edit-items edit-items-none">
+      <input class="edit-text" type="text" name="item" placeholder="Item Name" required>
+      <input type="submit" value="-> Edit Item">
+    </form>
   </div>
 
 <script>
 
   const items = JSON.parse(localStorage.getItem('items')) || [];
+  
+  const wrapper = document.querySelector('.wrapper');    
+  const formEdit = wrapper.querySelector('.edit-items');
 
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.todos');
@@ -69,6 +76,7 @@
         <li>
           <input type="checkbox" data-index=${i} id="item${i}" ${todo.done ? 'checked' : ''} />
           <label for="item${i}">${i+1}: ${todo.text}</label>
+          <button data-index=${i} class="edit">✍🏽</button>
           <button data-index=${i} class="delete-one">❌</button>
         </li>
       `;
@@ -103,6 +111,32 @@
     items.splice(index, 1);
     populateList(items, itemsList);
     updateLocalStorage();
+  }  
+  
+  function editItem(e) {
+    const el = e.target;
+    if (!el.matches('.edit')) return;
+    const index = el.dataset.index;
+    formEdit.classList.remove('edit-items-none');
+    const submitEdit = (e) => {
+      e.preventDefault();
+      const editText = (formEdit.querySelector('.edit-text')).value;
+      items[index].text = editText;
+      addItems.reset();
+      updateLocalStorage();
+      populateList(items, itemsList);
+      formEdit.classList.add('edit-items-none');
+      console.log(items)
+    }
+    formEdit.addEventListener('submit', submitEdit);
+    console.log(e);
+    formEdit.reset();
+  }
+
+  function closeEdit(e) {
+    const el = e.target;
+    if (el.matches('input')) return;
+    formEdit.classList.add('edit-items-none');
   }
 
   function checkAllItems() {
@@ -123,6 +157,9 @@
   deleteAll.addEventListener('click', deleteAllItems);
   deleteLast.addEventListener('click', deleteLastItem);
   itemsList.addEventListener('click', deleteOneItem);
+
+  itemsList.addEventListener('click', editItem);
+  formEdit.addEventListener('click', closeEdit);
 
   checkAll.addEventListener('click', checkAllItems);
   uncheckAll.addEventListener('click', uncheckAllItems);

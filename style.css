@@ -3,7 +3,6 @@ html {
   background: url('https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') center no-repeat;
   background-size: cover;
   min-height: 100vh;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,6 +43,7 @@ svg {
   background: rgba(255,255,255,0.95);
   box-shadow: 0 0 0 10px rgba(0,0,0,0.1);
   z-index: 1;
+  position: relative;
 }
 
 h2 {
@@ -109,13 +109,40 @@ h2 {
   margin-top: 20px;
 }
 
-.add-items input, button {
+input, button {
   padding: 10px;
   outline: 0;
   border: 1px solid rgba(0,0,0,0.1);
 }
 
-.delete-one{
+.delete-one, .edit{
   padding: 1px;
   background: rgba(216, 73, 83, 0.082);
+  margin-left: 5px;
 }
+
+.edit{
+  background: rgba(102, 216, 73, 0.082);
+}
+
+.edit-items{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.466);
+}
+
+.edit-items-none{
+  display: none;
+}
+
+
+/* .edit-text{
+  position: absolute;
+
+} */

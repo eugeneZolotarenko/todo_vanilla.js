@@ -75,7 +75,7 @@
       return `
         <li>
           <input type="checkbox" data-index=${i} id="item${i}" ${todo.done ? 'checked' : ''} />
-          <label for="item${i}">${i+1}: ${todo.text}</label>
+          <label for="item${i}">${todo.text}</label>
           <button data-index=${i} class="edit">✍🏽</button>
           <button data-index=${i} class="delete-one">❌</button>
         </li>
@@ -85,7 +85,7 @@
 
   function toggleDone(e) {
     const el = e.target;
-    if (!el.matches('input')) return;
+    if (!el.matches('[type="checkbox"]')) return;
     const index = el.dataset.index;
     items[index].done = !items[index].done;
     updateLocalStorage();
@@ -117,26 +117,30 @@
     const el = e.target;
     if (!el.matches('.edit')) return;
     const index = el.dataset.index;
-    formEdit.classList.remove('edit-items-none');
-    const submitEdit = (e) => {
+    const itemLabel = itemsList.querySelector(`[for="item${index}"]`);
+    const textToEdit = items[index].text
+    if (itemLabel.innerHTML === textToEdit) {
+      itemLabel.innerHTML = `
+        <form class="edit-items">
+          <input class="edit-text" type="text" name="item" value=${textToEdit} placeholder=${textToEdit} required>
+          <input type="submit" value="Edit">
+        </form>
+       `
+    } else{
+      itemLabel.innerHTML = textToEdit
+      
+    }
+    const editForm = document.querySelector(".edit-items");
+    const onSubmitEdit = (e => {
       e.preventDefault();
-      const editText = (formEdit.querySelector('.edit-text')).value;
-      items[index].text = editText;
-      addItems.reset();
+      const editFormInput = editForm.querySelector("[type='text']");
+      const editedText = editFormInput.value;
+      items[index].text = editedText;
       updateLocalStorage();
       populateList(items, itemsList);
-      formEdit.classList.add('edit-items-none');
-      console.log(items)
-    }
-    formEdit.addEventListener('submit', submitEdit);
-    console.log(e);
-    formEdit.reset();
-  }
-
-  function closeEdit(e) {
-    const el = e.target;
-    if (el.matches('input')) return;
-    formEdit.classList.add('edit-items-none');
+    })
+    editForm.addEventListener("submit", onSubmitEdit);
+    editForm.addEventListener("change", onSubmitEdit);
   }
 
   function checkAllItems() {
@@ -159,7 +163,6 @@
   itemsList.addEventListener('click', deleteOneItem);
 
   itemsList.addEventListener('click', editItem);
-  formEdit.addEventListener('click', closeEdit);
 
   checkAll.addEventListener('click', checkAllItems);
   uncheckAll.addEventListener('click', uncheckAllItems);

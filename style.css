@@ -76,7 +76,7 @@ h2 {
   cursor: pointer;
 }
 
-.todos input {
+.todos [type="checkbox"] {
   display: none;
 }
 
@@ -85,12 +85,12 @@ h2 {
   align-items: center;
 }
 
-.todos input + label:before {
+.todos [type="checkbox"] + label:before {
   content: '⬜️';
   margin-right: 10px;
 }
 
-.todos input:checked + label:before {
+.todos [type="checkbox"]:checked + label:before {
   content: '👌';
 }
 
@@ -127,14 +127,18 @@ input, button {
 
 .edit-items{
   width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.466);
+  /* justify-content: center; */
+  /* background: rgba(0, 0, 0, 0.466); */
+}
+
+.edit-items [type="text"]{
+  width: 60%;
+}
+.edit-items [type="submit"]{
+  width: 30%;
+  margin-left: 5px;
 }
 
 .edit-items-none{
